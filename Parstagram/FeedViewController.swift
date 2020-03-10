@@ -67,7 +67,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
         //Create the comment
         let comment = PFObject(className: "Comments")
-        comment["text"] = "This is a random comment"
+        //comment["text"] = "This is a random comment"
+        comment["text"] = text
         comment["post"] = selectedPost
         comment["author"] = PFUser.current()!
         
@@ -104,7 +105,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     //required function for data source
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let post = posts[indexPath.section]
+        //let post = posts[indexPath.section]
+        let post = self.posts[indexPath.section]
         let comments = (post["comments"] as? [PFObject]) ?? []
         
         if indexPath.row == 0 {
@@ -113,20 +115,21 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             let user = post["author"] as! PFUser
             cell.usernameLabel.text = user.username
 
-            cell.captionLabel.text = post["caption"] as! String
+            cell.captionLabel.text = post["caption"] as? String
             
             let imageFile = post["image"] as! PFFileObject
             let urlString = imageFile.url!
             let url = URL(string: urlString)!
 
             cell.photoView.af_setImage(withURL: url)
+            print(urlString)
 
             return cell
         } else if indexPath.row <= comments.count{
             let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell") as! CommentCell
             
             let comment = comments[indexPath.row - 1]
-            cell.nameLabel.text = comment["text"] as? String
+            cell.commentLabel.text = comment["text"] as! String
             
             let user = comment["author"] as! PFUser
             cell.nameLabel.text = user.username

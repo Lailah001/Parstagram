@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 { (configuration:
                 ParseMutableClientConfiguration) -> Void in
                 configuration.applicationId = "Parstagram"
-                configuration.server = "https://still-spire-79647.herokuapp.com/"
+                configuration.server = "https://still-spire-79647.herokuapp.com/parse"
             })
         )
         
